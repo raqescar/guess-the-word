@@ -62,20 +62,48 @@ const validate = function (input) {
     } else if (!input.match(acceptedLetter)) {
         message.innerText = "enter a letter from a-z"
     } else {
-        message.innerText = "Good guess!";
+        message.innerText = `You guessed ${input.toUpperCase()}!`;
         return input;
     }
  
 };
 
 
-//guessed letters 
+//add guessed letters to array 
 const makeGuess = function (letter){
     capitalLetter = letter.toUpperCase();
     if (guessedLetters.includes(capitalLetter)) {
         message.innerText = "You already guessed that letter";
     } else {
         guessedLetters.push(capitalLetter);
+        updateLetters();
+        updateWord(guessedLetters);
     }
     console.log(guessedLetters);
+};
+
+// add guessed letter to page
+const updateLetters = function () {
+    liGuessedLetters.innerHTML = "";
+    for (const letter of guessedLetters) {
+        const li = document.createElement("li");
+        li.innerText = letter;
+        liGuessedLetters.append(li);
+    }
+};
+
+// update word in progress
+const updateWord = function (guessedLetters) {
+    const wordArray = word.toUpperCase().split("");
+    //console.log(wordArray);
+    const revealWord = [];
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            revealWord.push(letter.toUpperCase());
+        } else {
+            revealWord.push('●');
+        }
+    }
+    console.log(revealWord);
+    wordInProgress.innerText = revealWord.join('');
 };
