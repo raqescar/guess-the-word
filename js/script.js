@@ -19,7 +19,7 @@ let word = "magnolia";
 // array for guessed letters
 const guessedLetters = [];
 // remaining guesses
-let remainingGuesses = 8;
+let remainingGuesses = 5;
 
 const getWord = async function () {
     const request = await fetch ("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
@@ -33,7 +33,6 @@ const getWord = async function () {
     console.log(word); 
     wordSymbols (word);
 }
-//getWord();
 
 
 //add symbol to represent letter in the word
@@ -45,8 +44,9 @@ const wordSymbols = function (word) {
     }
     wordInProgress.innerText = wordSplit.join("");
 };
+
 getWord();
-//wordSymbols(word);
+
 
 //log guessed letter and clear input field
 guessButton.addEventListener("click", function (e) {
@@ -133,6 +133,7 @@ const guessCount = function (guess) {
     if (remainingGuesses === 0) {
         message.innerText = `Game over. The correct word is ${word}`;
         span.innerText = "0 guesses"
+        startOver();
     } else if (remainingGuesses === 1) {
         span.innerText = "only 1 guess";
     } else {
@@ -148,8 +149,27 @@ const winner = function () {
     if (wordInProgress.innerText === word.toUpperCase()) {
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        startOver();
     }
 };
 
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remaining.classList.add("hide");
+    liGuessedLetters.classList.add("hide");
+    playButton.classList.remove("hide");
+};
 
-
+playButton.addEventListener("click", function () {
+    message.classList.remove("win");
+    message.innerText = "";
+    liGuessedLetters.innerText = "";
+    remainingGuesses = 5;
+    guessedLetters.length = 0;
+    span.innerHTML = `${remainingGuesses} remaining`;
+    guessButton.classList.remove("hide");
+    remaining.classList.remove("hide");
+    liGuessedLetters.classList.remove("hide");
+    playButton.classList.add("hide");
+    getWord();
+});
