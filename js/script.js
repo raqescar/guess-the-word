@@ -15,11 +15,26 @@ const message = document.querySelector(".message");
 //The hidden button that will appear prompting the player to play again.
 const playButton = document.querySelector(".play-again");
 //test word
-const word = "magnolia";
+let word = "magnolia";
 // array for guessed letters
 const guessedLetters = [];
 // remaining guesses
 let remainingGuesses = 8;
+
+const getWord = async function () {
+    const request = await fetch ("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+    const words = await request.text();
+    //console.log(wordData);
+    const wordArray = words.split("\n");
+    //console.log(wordArray);
+    const randomIndex = Math.floor(Math.random() * wordArray.length); 
+    console.log(randomIndex);
+    word = wordArray[randomIndex].trim();
+    console.log(word); 
+    wordSymbols (word);
+}
+//getWord();
+
 
 //add symbol to represent letter in the word
 const wordSymbols = function (word) {
@@ -30,8 +45,8 @@ const wordSymbols = function (word) {
     }
     wordInProgress.innerText = wordSplit.join("");
 };
-
-wordSymbols(word);
+getWord();
+//wordSymbols(word);
 
 //log guessed letter and clear input field
 guessButton.addEventListener("click", function (e) {
