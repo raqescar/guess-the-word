@@ -18,6 +18,8 @@ const playButton = document.querySelector(".play-again");
 const word = "magnolia";
 // array for guessed letters
 const guessedLetters = [];
+// remaining guesses
+let remainingGuesses = 8;
 
 //add symbol to represent letter in the word
 const wordSymbols = function (word) {
@@ -62,7 +64,6 @@ const validate = function (input) {
  
 };
 
-
 //add guessed letters to array 
 const makeGuess = function (letter){
     capitalLetter = letter.toUpperCase();
@@ -70,6 +71,7 @@ const makeGuess = function (letter){
         message.innerText = "You already guessed that letter";
     } else {
         guessedLetters.push(capitalLetter);
+        guessCount(capitalLetter);
         updateLetters();
         updateWord(guessedLetters);
     }
@@ -104,6 +106,26 @@ const updateWord = function (guessedLetters) {
     winner();
 };
 
+const guessCount = function (guess) {
+    const letterArray = word.toUpperCase().split('');
+    if (!letterArray.includes(guess)) {
+        message.innerText = `You guessed ${guess}, try again`;
+        remainingGuesses -= 1;
+        console.log(remainingGuesses);
+    } else {
+        message.innerText = `Good Job! ${guess} is in the word!`;
+    }
+    if (remainingGuesses === 0) {
+        message.innerText = `Game over. The correct word is ${word}`;
+        span.innerText = "0 guesses"
+    } else if (remainingGuesses === 1) {
+        span.innerText = "only 1 guess";
+    } else {
+        span.innerText = ` ${remainingGuesses} guesses`;
+    }
+};
+
+
 // check if player guessed word and won 
 const winner = function () {  
     //console.log(wordInProgress);
@@ -113,7 +135,6 @@ const winner = function () {
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
     }
 };
-
 
 
 
